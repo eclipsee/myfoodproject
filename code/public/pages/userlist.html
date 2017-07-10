@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!--建墙  不登录无法进入-->
+    <script src="/checkLogin"></script>
+
+    <title>学校食堂安全管理系统v1.0</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link href="../vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link href="../vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="../dist/css/extendcss.css"/>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+
+        <script src="commonnav.html">
+        </script>
+
+        <div id="page-wrapper">
+           <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading row">
+                           	<div class="col-sm-6"> 当前位置: 系统管理 >用户管理</div>
+                           	<div class="col-sm-6"><div class="optiondiv"><button type="button" class="btn btn-primary btn-sm" id="btncreate">新增</button>&nbsp;<button type="button" class="btn btn-primary btn-sm" id="btnedit">编辑</button>&nbsp;<button type="button" class="btn btn-primary btn-sm" id="btndelete">删除</button></div></div>
+                        </div>
+                        <!-- 高级查找栏-->
+  						<div class="row panel-body">
+                           	<form class="form-inline" role="form">
+							  <div class="form-group">
+							   <div class="input-group">
+							      <div class="input-group-addon">所在部门</div>
+							       <select class="form-control" id="search_dept">
+							       		<option>全部</option>
+							       		<option>教学部</option>
+							            <option>财务部</option>
+                                        <option>行政部</option>
+							            <option>学工部</option>
+							            <option>就业部</option>
+
+							        </select>
+							    </div>
+							  </div>
+							  <div class="form-group">
+							   <div class="input-group">
+							      <div class="input-group-addon">角色组</div>
+							       <select class="form-control" id="search_role">
+							            <option>全部</option>
+							            <option>超级管理员</option>
+							            <option>普通用户</option>
+							        </select>
+							    </div>
+							  </div>
+							  <div class="form-group">
+							    <div class="input-group">
+							      <div class="input-group-addon">登录账号：</div>
+							      <input class="form-control" id="search_username" type="text" placeholder="登录账号">
+							    </div>
+							  </div>
+							  <button type="button" class="btn btn-default" id="searchbtn">查询</button>
+							</form>
+                        </div>
+                        <div class="panel-body">
+
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th class="center"><input type="checkbox" id="cball"/></th>
+                                        <th>用户账号</th>
+                                        <th>用户名称</th>
+                                        <th>所属角色</th>
+                                        <th>所属部门</th>
+                                        <th>是否启用</th>
+                                        <th>排序</th>
+                                        <th>状态</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="userBody">
+
+                                </tbody>
+                            </table>
+                            <!--分页模板-->
+                            <div class="row" id="pagebox">
+
+                            </div>
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+
+                <!-- /.col-lg-12 -->
+            </div>
+        </div>
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="../js/jquery-1.10.1.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../js/jquery.bootstrap.min.js"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
+
+    <!-- DataTables JavaScript -->
+    <script src="../vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="../vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
+    <script src="../vendor/datatables-responsive/dataTables.responsive.js"></script>
+
+    <script src="../dist/js/sb-admin-2.js"></script>
+    <script src="../dist/js/sea.js"></script>
+
+    <script>
+        /*  全选 */
+        $("#cball").click(function(){
+            $("input[data-view='view']").not(this).prop("checked",$(this).prop("checked"));
+        });
+    </script>
+
+
+	<script src="../js/jquery.tmpl.js" type="text/javascript"></script>
+	<!--3、定义数据展示模板-->
+	<script id="rowTpl" type="text/html">
+		{{each(i,user) list}}
+		<tr class="odd gradeX">
+			<td class="center"><input data-view="view" type="checkbox" value="{{= _id}}" id="userID"  /></td>
+			<td>{{= username}}</td>
+			<td>{{= truename}}</td>
+			<td>{{= role}}</td>
+			<td class="center">{{= department}}</td>
+			<td class="center">
+				{{if isActive==1}}
+				<input type="checkbox" checked="checked" disabled="disabled"/>
+				{{else}}
+				<input type="checkbox"  disabled="disabled"/>
+				{{/if}}
+			</td>
+			<td>{{= sortno}}</td>
+			<td>
+				{{if status==1}}
+				有效
+				{{else}}
+				无效
+				{{/if}}
+			</td>
+		</tr>
+		{{/each}}
+	</script>
+     <!--编辑所用本地模板-->
+    <div id="formTmpl" class="col-lg-12 wrapperbox">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">账号</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="username" placeholder="账号">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">真实姓名</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="truename" placeholder="真实姓名">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">角色</label>
+                <div class="col-sm-10">
+                    <select id="role" class="form-control">
+                        <option>超级管理员</option>
+                        <option>普通用户</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">部门</label>
+                <div class="col-sm-10">
+                    <select id="department" class="form-control">
+                        <option>教学部</option>
+                        <option>财务部</option>
+                        <option>行政部</option>
+                        <option>学工部</option>
+                        <option>就业部</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">排序</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="sortno" placeholder="序号">
+                </div>
+            </div>
+            <!--
+                启用:
+                    是  1
+                    否  0
+            -->
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">是否启用</label>
+                <div class="col-sm-10">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="isActive">启用
+                    </label>
+                </div>
+            </div>
+            <!--
+                 状态：
+                    有效  1
+                    无效  0
+            -->
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">状态</label>
+                <div class="col-sm-10">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="status">有效
+                    </label>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!--分页模板-->
+    <script id="pageTmp" type="text/html">
+        <div class="col-sm-6">
+            <div class="dataTables_info" id="dataTables-example_info" role="status"
+                 aria-live="polite">显示第{{= start}} 至 {{= end}}项记录，共 {{= totalCount}} 项
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="dataTables_paginate paging_simple_numbers" id="dataTables-example_paginate">
+                <ul class="pagination">
+                    <li class="paginate_button previous disabled" aria-controls="dataTables-example"
+                        tabindex="0" id="dataTables-example_previous">
+                        <a href="#">上页</a>
+                    </li>
+                    <!--
+                        如果这里有多个分页按钮，那么需要动态生成
+                    -->
+                    {{each(i,value) totalPageArr}}
+                    {{if currentPage==(i+1)}}
+                    <li class="paginate_button active" aria-controls="dataTables-example"
+                        tabindex="0" onclick="showList('{{= i+1}}')">
+                        <a href="#">{{= i+1}}</a>
+                    </li>
+                    {{else}}
+                    <li class="paginate_button" aria-controls="dataTables-example"
+                        tabindex="0" onclick="showList('{{= i+1}}')">
+                        <a href="#">{{= i+1}}</a>
+                    </li>
+                    {{/if}}
+                    {{/each}}
+
+                    <li class="paginate_button next disabled" aria-controls="dataTables-example"
+                        tabindex="0" id="dataTables-example_next">
+                        <a href="#">下页</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </script>
+
+
+    <!--CRUD && 查找按钮-->
+	<script type="text/javascript">
+		//加载页面
+		function refresh(){
+			$.get("/users/getUsers",function(data){
+				// 1.获取响应数据
+				// 2.使用模板合并数据
+				var result = $("#rowTpl").tmpl({"list":data});
+//				console.log('1111', $("#rowTpl").tmpl);
+				// 3.把数据更新到页面
+				$("#userBody").html(result);
+			});
+		}
+		//页面加载完毕执行
+		$(function(){
+			$('#formTmpl').hide();
+//			refresh();
+
+            //新增按钮
+            $("#btncreate").on("click",function(){
+                // 获取
+//                $("#现有页面的表单id") // 当前
+                $.get("/pages/userform.html",function(data){
+                    console.log(data);
+                    $(data).dialog({
+                        title:"新增用户",
+                        buttons: [{
+                            text: "取消",
+                            click: function() {
+                                $( this ).dialog( "destroy" );
+                            }
+                        },{
+                            text: "保存",
+                            click: function() {
+                                $( this ).dialog( "destroy" );
+                                var $self = $(this);
+//                            1、获取表单的所有参数（值）
+//                             $(“input[name=名称]”).val()
+                                var username =  $("#username1").val();
+//                                console.log("1",username);
+                                var truename =  $("#truename1").val();
+                                var role =  $("#role1").val();
+                                var department =  $("#department1").val();
+                                var sortno =  $("#sortno1").val();
+                                var isActive =  $("#isActive1").prop('checked')?1:0;
+                                var status =  $("#status1").prop('checked')?1:0;
+
+                                console.log(username,truename,role,department,sortno,isActive,status);
+//                            2、使用POST方式，发送AJAX请求
+//                            1） 确定请求方式
+//                            2） 确定请求地址
+//                            3） 确定请求参数
+                                $.post("/users/user_add",{
+                                    'username':username,
+                                    'truename':truename,
+                                    'role':role,
+                                    'department':department,
+                                    'sortno':sortno,
+                                    'isActive':isActive,
+                                    'status':status
+                                },function(data){
+//                                3、 处理后台返回数据后的回调
+                                    // 1） 获取响应数据
+                                    // 2） 使用数据渲染页面
+                                    if(data==1){
+                                        alert("保存成功！！");
+//                                            $.messager.alert("温馨提示", "保存成功！！");
+                                        // 刷新页面
+//                                        refresh();
+                                        showList(1);
+                                    }else{
+                                        alert('保存失败！！');
+                                    }
+                                });
+                            }
+                        }]
+                    });
+                });
+                // 外部
+
+                // 打开对话框
+            });
+
+            //删除按钮
+            $("#btndelete").on('click',function(){
+               // 1.选中要删除的数据  /2.点击删除按钮
+                      //在展示模板中给checkbox一个value，取value值为该行数据的_id，判断被选中的具有value值的checkbox
+//                    var id = $(":checked[value]").val();
+//                    console.log(id);
+				var arr =$("input[data-view='view']:checked");
+//				console.log(arr);
+				if(arr.length>=1){
+					var arrlist=[];
+					arr.each(function(i,item){
+						var value=$(this).val();
+						arrlist.push(value);
+						var arr= arrlist.join();
+					});
+//					console.log(arrlist);
+					alert("确定删除吗！");
+					$.get("/users/user_del",{"ids":arrlist},function(data){
+						if(data == 1){
+//							refresh();
+                            showList(1);
+//							alert("删除成功");
+
+						}
+					});
+				}else{
+					alert("请选择至少一条数据！");
+				}
+
+                //3.提示是否确定删除
+
+//				alert("确定删除吗！");
+
+                    //4.点击确定，发送请求到后台删除选中的数据   GET请求
+
+                    //5.刷新页面
+
+
+             });
+
+            //编辑按钮
+            $("#btnedit").on('click',function(){
+                //1.选中一行数据
+                //2.点击编辑按钮，弹出对话框
+                //3.对话框中有之前的数据
+                //4.根据需要 进行修改数据
+                //5.保存数据，修改成功
+
+				//首先判断是否选中了一行数据
+				if($(":checked[value]").length == 1){
+				     //1.选中一行数据,获取选中的信息的id
+					var id = $(":checked[value]").val();
+					$.get("/users/getoneuser",{"id":id},function(rowdata){
+						//2.点击编辑按钮，弹出对话框,默认为空白
+						$("#formTmpl").show().dialog({
+							title:"编辑用户",
+							buttons: [{
+								text: "取消",
+								click: function() {
+									$( this ).dialog( "close" );
+								}
+							},{
+								text: "保存",
+								click: function() {
+									var $self = $(this);
+									//1.获取数据
+//									var userid=$("#userID").attr();
+									var username=$("#username").val();
+									var truename=$("#truename").val();
+									var role=$("#role").val();
+									var department=$("#department").val();
+									var sortno=$("#sortno").val();
+									//由于被选中的checkbox会有一个checked属性，没选中的不具有该属性，可通过是否具有该属性来判断是否被选中
+									var isActive=$("#isActive").prop('checked')?1:0;
+									var status=$("#status").prop('checked')?1:0;
+//								console.log(username,truename,role,department,sortno,isActive,status);
+//								console.log(userid);
+
+									//2.发送数据
+									$.post('/users/user_edit',{
+//										'userid':userid,
+                                        'id':id,
+										'username':username,
+										'truename':truename,
+										'role':role,
+										'department':department,
+										'sortno':sortno,
+										'isActive':isActive,
+										'status':status
+									},function(data){
+										//3.处理数据
+										if(data == 1){
+											alert('保存成功');
+											//保存成功之后关闭对话框并刷新页面
+											$self.dialog( "close" );
+											//refresh();
+                                            showList(1);
+//                                        $( this ).dialog( "close" );
+										}else{
+											alert('保存失败');
+										}
+									});
+//								refresh();
+								}
+
+							}]
+						});
+						//3.对话框中有之前的数据 首先拿到后台根据id查询后得到的数据，
+						//后端返回过来的rowdata是一个object
+						var username=rowdata.username;
+						var truename=rowdata.truename;
+						var role=rowdata.role;
+						var department=rowdata.department;
+						var sortno=rowdata.sortno;
+						//由于被选中的checkbox会有一个checked属性，没选中的不具有该属性，可通过是否具有该属性来判断是否被选中
+						var isActive=rowdata.isActive;
+						var status=rowdata.status;
+//						console.log(rowdata.status);  //1  0
+						//4.再把这些数据设置在对话框的表单里
+						$("#username").val(username);
+						$("#truename").val(truename);
+						$("#role").val(role);
+						$("#department").val(department);
+						$("#sortno").val(sortno);
+						$("#isActive").prop('checked',isActive==1?true:false);
+						$("#status").prop('checked',status==1?true:false);
+						//5.修改了数据之后点击保存，把这些数据再保存到数据库里
+
+					});
+				}else{
+					alert("请选择一条数据！");
+				}
+            });
+
+			// 查询按钮  search_dept  search_username  search_role
+			$("#searchbtn").on('click',function(){
+					//1.获取表单的值
+				var department = $("#search_dept").val();
+				var role = $("#search_role").val();
+				var username = $("#search_username").val();
+
+//				console.log(department,role,username);
+                //由于要向后台传送多个数据，就把这些封装起来一起传输
+                var data = {
+                    'department':department,
+                    'role':role,
+                    'username':username
+                }
+                //2.发送ajax请求
+                $.post('/users/user_search',data,function(data){
+//                    console.log(data);
+                    var result = $("#rowTpl").tmpl({"list":data});
+
+                    // 把数据更新到页面
+                    $("#userBody").html(result);
+                })
+			})
+        });
+
+	</script>
+   <!--分页展示-->
+    <script>
+        //分页显示函数
+        function showList(currentPage){
+            //根据传入的页码来进行查找显示
+            $.get("/users/getdepart?currentPage="+currentPage,function(data){
+//                    console.log(data);
+                //接受后端的数据
+                var tmplData={"list":data.list};
+                var result = $("#rowTpl").tmpl(tmplData);
+//                    console.log('result',result);
+                //把数据添加到模板中并展示出来
+                $("#userBody").html(result);
+                //渲染分页底栏数据
+                //把总页数放进一个数组里，数组的长度就是总页数。在模板中
+                var totalPage =  data.totalPage;
+                var totalPageArr = new Array(totalPage);
+                data.totalPageArr = totalPageArr;
+                $('#pagebox').html($("#pageTmp").tmpl(data));
+            });
+        }
+       //页面加载完毕调用分页显示函数
+        $(function () {
+            // 第一打开页面的列表展示
+            showList(1);
+        });
+        // 发ajax请求，动态加载数据
+
+        $.get("/users/getAllLog",function(data){
+//                console.log(data);
+            var tmplData = {"list":data};
+            $("#rowTpl").tmpl(tmplData).appendTo("#userBody");
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--src : 根据配置的地址加载JS脚本,可以是静态地址（/index.js）或者路由地址（/checkLogin）-->
+
+    <!--建墙  不登录无法进入-->
+    <script src="/checkLogin"></script>
+
+    <title>学校食堂安全管理系统v1.0</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link href="../vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link href="../vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="../dist/css/extendcss.css"/>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+
+        <script src="commonnav.html">
+        </script>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading row">
+                            <div class="col-sm-6">当前位置:系统管理>日志管理 </div>
+                            <div class="col-sm-6"><div class="optiondiv"><button type="button" class="btn btn-primary btn-sm" id="btn_print">导出/打印</button></div></div>
+                        </div>
+                        <div class="panel-body">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables">
+                                <thead>
+                                    <tr>
+                                        <th>管理员用户名</th>
+                                        <th>操作说明</th>
+                                        <th>操作时间</th>
+                                        <th>操作结果</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                            <!--分页模板-->
+                            <div class="row" id="pagebox">
+
+                            </div>
+                        </div>
+                      
+                    </div>
+                   
+                </div>
+               
+            </div>
+          
+          
+        </div>
+      
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!--引入打印插件文件-->
+    <script src="../printThis-master/printThis.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
+
+
+    <!-- DataTables JavaScript -->
+    <script src="../vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="../vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
+    <script src="../vendor/datatables-responsive/dataTables.responsive.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../dist/js/sb-admin-2.js"></script>
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+//  $(document).ready(function() {
+//      $('#dataTables-example').DataTable({
+//          responsive: true,
+//          oLanguage: {
+//								"sUrl": "../vendor/datatables/js/zh_CN.json"
+//			} 
+//      });
+//  });
+
+
+$(function(){
+	$.post("http://127.0.0.1:8888",function(data){
+		console.log(data);
+	});
+});
+
+    </script>
+    <script src="../js/jquery.tmpl.js"></script>
+
+    <script id="rowTmp" type="text/html">
+        {{each(i,log) list}}
+        <tr class="odd gradeX">
+            <td>{{= user}}</td>
+            <td>{{= action}}</td>
+            <td>{{= time}}</td>
+            <td class="center">成功</td>
+        </tr>
+        {{/each}}
+    </script>
+    <script id="pageTmp" type="text/html">
+        <div class="col-sm-6">
+            <div class="dataTables_info" id="dataTables-example_info" role="status"
+                 aria-live="polite">显示第{{= start}} 至 {{= end}}项记录，共 {{= totalCount}} 项
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="dataTables_paginate paging_simple_numbers" id="dataTables-example_paginate">
+                <ul class="pagination">
+                    <li class="paginate_button previous disabled" aria-controls="dataTables-example"
+                        tabindex="0" id="dataTables-example_previous">
+                        <a href="#">上页</a>
+                    </li>
+                    <!--
+                        如果这里有多个分页按钮，那么需要动态生成
+                        i是索引，从0开始 所以应该+1从1开始遍历。然后给对应的li一个点击事件，调用showList函数
+                    -->
+                    {{each(i,value) totalPageArr}}
+                    {{if currentPage==(i+1)}}
+                    <li class="paginate_button active" aria-controls="dataTables-example"
+                        tabindex="0" onclick="showList('{{= i+1}}')">
+                        <a href="#">{{= i+1}}</a>
+                    </li>
+                    {{else}}
+                    <li class="paginate_button" aria-controls="dataTables-example"
+                        tabindex="0" onclick="showList('{{= i+1}}')">
+                        <a href="#">{{= i+1}}</a>
+                    </li>
+                    {{/if}}
+                    {{/each}}
+
+                    <li class="paginate_button next disabled" aria-controls="dataTables-example"
+                        tabindex="0" id="dataTables-example_next">
+                        <a href="#">下页</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </script>
+
+    <script>
+
+            function showList(currentPage){
+                //根据传入的页码来进行查找显示
+                $.get("/logs/getLogs?currentPage="+currentPage,function(data){
+//                    console.log(data);
+                    //接受后端的数据
+                    var tmplData={"list":data.list};
+                    var result = $("#rowTmp").tmpl(tmplData);
+//                    console.log('result',result);
+                    //把数据添加到模板中并展示出来
+                    $("#dataTables tbody").html(result);
+                    //渲染分页底栏数据
+                    //把总页数放进一个数组里，数组的长度就是总页数
+                    var totalPage =  data.totalPage;
+                    var totalPageArr = new Array(totalPage);
+                    data.totalPageArr = totalPageArr;
+                    $('#pagebox').html($("#pageTmp").tmpl(data));
+                });
+            }
+
+            $(function () {
+                // 第一打开页面的列表展示
+                showList(1);
+            });
+            // 发ajax请求，动态加载数据
+
+
+
+
+
+            $.get("/users/getAllLog",function(data){
+//                console.log(data);
+                var tmplData = {"list":data};
+                $("#rowTmp").tmpl(tmplData).appendTo("#dataTables tbody");
+            });
+
+
+            //打印按钮
+            $("#btn_print").click(function(event) {
+                /* Act on the event */
+                $("#dataTables").printThis({
+                    debug: false,
+                    importCSS: false,
+                    importStyle: false,
+                    printContainer: true,
+//               loadCSS: "/Content/Themes/Default/style.css",
+                    removeInline: false,
+                    printDelay: 333,
+                    header: null,
+                    formValues: false
+                });
+//      alert("等待打印");
+            });
+    </script>
+</body>
+
+</html>

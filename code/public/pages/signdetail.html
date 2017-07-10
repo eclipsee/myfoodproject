@@ -1,0 +1,230 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>学校食堂安全管理系统v1.0</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link href="../vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link href="../vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="../dist/css/extendcss.css"/>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <script src="commonnav.html">
+        </script>
+        <div id="page-wrapper">
+           <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading row">
+                           	<div class="col-sm-6"> 当前位置: 库存管理 >进货签收</div>
+                           	<div class="col-sm-6"><div class="optiondiv"></div></div>
+                        </div>
+                        <div class="row">
+				                <div class="col-lg-12">
+				                    <h3 class="tablename"> 送 货 签 收 单</h3>
+				                </div>
+                				<!-- /.col-lg-12 -->
+            			</div>
+                    	<div class="row panel-body">
+                       		<div class="col-sm-2">签收单位：乐善中学</div>
+                       		<div class="col-sm-4">送货单位：广安益佳科技有限公司</div>
+                       		<div class="col-sm-3">送货单编号：SHD20160515001</div>
+                       		<div class="col-sm-3"><div class="optiondiv">单据日期：2016年9月15日</div></div>
+                    	</div>
+                        
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th class="center">序号</th>
+                                        <th class="center">进货计划单号</th>
+                                        <th class="center">食材名称</th>
+                                        <th class="center">采购计划数量</th>
+                                        <th class="center">单位</th>
+                                        <th class="center">已送数量</th>
+                                        <th class="center">本次送货数量</th>
+                                        <th class="center">本次签收数量</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="odd gradeX">
+                                        <td>1</td>
+                                        <td>JHD20160515001</td>
+                                        <td>东北珍珠米</td>
+                                        <td>50</td>
+                                        <td>袋</td>                                          
+                                    	<td>30</td>
+                                    	<td>20</td>
+                                    	<td>20</td>
+                                    </tr>
+                                    <tr class="odd gradeX">
+                                        <td>1</td>
+                                        <td>JHD20160515001</td>
+                                        <td>东北珍珠米</td>
+                                        <td>50</td>
+                                        <td>袋</td>                                           
+                                    	<td>30</td>
+                                    	<td>20</td>
+                                    	<td>20</td>
+                                    </tr>
+                                    <tr class="odd gradeX">
+                                        <td>1</td>
+                                        <td>JHD20160515001</td>
+                                        <td>东北珍珠米</td>
+                                        <td>50</td>
+                                        <td>袋</td>                                        
+                                    	<td>30</td>
+                                    	<td>20</td>
+                                    	<td>20</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- /.table-responsive -->
+                             <form class="form-horizontal panel-body" role="form">
+								  <div class="form-group">
+								    <label  class="col-sm-1 control-label">签收人：</label>
+								    <div class="col-sm-3">
+								      <input type="email" class="form-control" id="inputEmail3" placeholder="签收人">
+								    </div>
+								     <div class="col-sm-4"></div>
+								    <label for="inputPassword3" class="col-sm-1 control-label">签收时间：</label>
+								    <div class="col-sm-3">
+								      <input type="password" class="form-control" id="inputPassword3" placeholder="签收时间">
+								    </div>
+								  </div>
+								  
+								  <div class="form-group">
+                                       <label  class="col-sm-1 control-label">备注：</label>
+                                       <div class="col-sm-11">
+                                            <textarea class="form-control" rows="3" placeholder="录入备注信息"></textarea>
+                                       </div>    
+                                  </div>
+								  <div class="form-group">
+								    <div class="col-sm-offset-1 col-sm-10">
+								      <button type="submit" class="btn btn-default">签收</button>
+								    </div>
+								  </div>
+							</form>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                
+                <!-- /.col-lg-12 -->
+            </div>
+           
+          
+          
+        </div>
+      
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
+
+    <!-- DataTables JavaScript -->
+    <script src="../vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="../vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
+    <script src="../vendor/datatables-responsive/dataTables.responsive.js"></script>
+
+    <script src="../dist/js/sb-admin-2.js"></script>
+    <script src="../dist/js/sea.js"></script>
+    <script>
+		$("#cball").click(function(){
+			$("input[type='checkbox']").not(this).prop("checked",$(this).prop("checked"));
+		});
+
+		seajs.config({
+		  alias: {
+		    "jquery": "jquery-1.10.2.js"
+		  }
+		});
+
+		seajs.use(['jquery', 'dialog-plus'], function ($, dialog) {
+			$('#btncreate').on('click', function () {
+				//构造表单
+				jQuery.get("supplierform.html",function(data){
+    				var d = dialog({
+						title: '创建供应商',
+						content:data,
+						width:500,
+						okValue: '确 定',
+						ok: function () {
+	
+						},
+						cancelValue: '取消',
+						cancel: function () {}
+					});
+		
+					d.showModal();
+    			});				
+			});
+			
+			$('#btnedit').on('click', function () {
+				//构造表单
+				jQuery.get("supplierform.html",function(data){
+    				var d = dialog({
+						title: '创建供应商',
+						content:data,
+						width:500,
+						okValue: '确 定',
+						ok: function () {
+	
+						},
+						cancelValue: '取消',
+						cancel: function () {}
+					});
+		
+					d.showModal();
+    			});				
+			});
+		});
+</script>
+
+
+
+</body>
+
+</html>
